@@ -9,6 +9,9 @@
     "prepublishOnly": "npm run build",
     "test": "jest"
   },
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ivan-nor/frontend-project-lvl2.git"
