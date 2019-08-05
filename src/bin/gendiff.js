@@ -7,16 +7,18 @@ const gendiff = require('commander');
 
 gendiff
   .version('0.1.0')
-  .option('-v, --version', 'output the version number')
   .option('-f, --format [type]', 'output format')
+  .description('Compares two configuration files and shows a difference.')
   .on('-h, --help', () => {})
   .arguments('<firstConfig> <secondConfig>')
-  .description('Compares two configuration files and shows a difference.')
+
   // .action((cmd, env) => {
   //   cmdValue = cmd;
   //   envValue = env;
   // })
   .parse(process.argv);
+
+if (!gendiff.args.length) gendiff.help();
 
 // if (typeof cmdValue === 'undefined') {
 //   console.error('no command given!');
