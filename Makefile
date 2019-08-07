@@ -15,3 +15,6 @@ test:
 	npm test
 test-coverage:
 	npm test -- --coverage
+quick:
+	npm publish --dry-run
+	sudo npm link
