@@ -3,12 +3,18 @@ import fs from 'fs';
 // import path from 'path';
 import gendiff from '../src/bin/gendiff';
 
-const first = `${__dirname}/__fixtures__/before.json`;
-const second = `${__dirname}/__fixtures__/after.json`;
-const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
+const firstJSON = `${__dirname}/__fixtures__/before.json`;
+const secondJSON = `${__dirname}/__fixtures__/after.json`;
+const result = fs.readFileSync(`${__dirname}/__fixtures__/result.txt`, 'utf8');
+// console.log(result);
+const firstYAML = `${__dirname}/__fixtures__/before.yaml`;
+const secondYAML = `${__dirname}/__fixtures__/after.yaml`;
 
 describe('gendiff', () => {
-  it('сравниваем построчно', () => {
-    assert.equal(gendiff(first, second), result);
+  // it('JSON', () => {
+  //   assert.equal(gendiff(firstJSON, secondJSON), result);
+  // });
+  it('YAML', () => {
+    assert.equal(gendiff(firstYAML, secondYAML), result);
   });
 });
