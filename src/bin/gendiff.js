@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// import path from 'path';
+
 import fs from 'fs';
 import program from 'commander';
 import _ from 'lodash';
+import path from 'path';
 
 const arrToResult = (arr) => {
   if (arr.length === 0) {
@@ -39,7 +40,9 @@ const compareFiles = (first, second) => {
   return result;
 };
 
-const genDiff = (pathToFirst, pathToSecond) => {
+const genDiff = (before, after) => {
+  const pathToFirst = path.resolve(__dirname, process.cwd(), before);
+  const pathToSecond = path.resolve(__dirname, process.cwd(), after);
   const first = fs.readFileSync(pathToFirst, 'utf8', (err, data) => {
     // читаем первый файл, его содержимое в data
     if (err) throw err;
