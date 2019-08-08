@@ -38,14 +38,14 @@ const compareFiles = (first, second) => {
   return result;
 };
 
-const genDiff = (pathToFile1, pathToFile2) => {
-  const first = fs.readFileSync(pathToFile1, 'utf8', (err, data) => {
+const genDiff = (pathToFirst, pathToSecond) => {
+  const first = fs.readFileSync(pathToFirst, 'utf8', (err, data) => {
     // читаем первый файл, его содержимое в data
     if (err) throw err;
     console.log(data);
   });
 
-  const second = fs.readFileSync(pathToFile2, 'utf8', (err, data) => {
+  const second = fs.readFileSync(pathToSecond, 'utf8', (err, data) => {
     // читаем второй файл, его содержимое в data
     if (err) throw err;
     console.log(data);
@@ -55,9 +55,6 @@ const genDiff = (pathToFile1, pathToFile2) => {
 
   return compareFiles(firstJSON, secondJSON);
 };
-
-let before;
-let after;
 
 program
   .version('0.1.0')
