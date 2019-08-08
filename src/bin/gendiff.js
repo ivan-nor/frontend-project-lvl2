@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 import fs from 'fs';
-import program from 'commander';
+// import program from 'commander';
 import _ from 'lodash';
 import path from 'path';
+import yaml from 'js-yaml';
 
 const arrToResult = (arr) => {
   if (arr.length === 0) {
@@ -36,13 +37,18 @@ const compareFiles = (first, second) => {
   });
 
   const result = `\n{\n${arrToResult(compare.sort())}}`;
-
+  // console.log(result);
   return result;
 };
 
 const genDiff = (before, after) => {
+  const firstExtname = path.extname(before);
+  const secondExtname = path.extname(after);
+  // console.log(firstExtname);
+  // console.log(secondExtname);
   const pathToFirst = path.resolve(__dirname, process.cwd(), before);
   const pathToSecond = path.resolve(__dirname, process.cwd(), after);
+
   const first = fs.readFileSync(pathToFirst, 'utf8', (err, data) => {
     // читаем первый файл, его содержимое в data
     if (err) throw err;
@@ -54,21 +60,25 @@ const genDiff = (before, after) => {
     if (err) throw err;
     console.log(data);
   });
-  const firstJSON = JSON.parse(first);
-  const secondJSON = JSON.parse(second);
-
-  return compareFiles(firstJSON, secondJSON);
+  if (firstExtname === '.json' && secondExtname === '.json') {
+    const firstParse = JSON.parse(first);
+    const secondParse = JSON.parse(second);
+    return compareFiles(firstParse, secondParse);
+  }
+  const firstParse = yaml.safeLoad(first);
+  const secondParse = yaml.safeLoad(second);
+  return compareFiles(firstParse, secondParse);
 };
 
-program
-  .version('0.1.0')
-  .option('-f, --format [type]', 'output format')
-  .description('Compares two configuration files and shows a difference.')
-  .arguments('<firstConfig> <secondConfig>')
-  .action((file1, file2) => {
-    console.log(genDiff(file1, file2));
-  });
+// program
+//   .version('0.1.0')
+//   .option('-f, --format [type]', 'output format')
+//   .description('Compares two configuration files and shows a difference.')
+//   .arguments('<firstConfig> <secondConfig>')
+//   .action((file1, file2) => {
+//     console.log(genDiff(file1, file2));
+//   });
 
-program.parse(process.argv);
+// program.parse(process.argv);
 
 export default genDiff;
