@@ -27,6 +27,7 @@ const compareFiles = (first, second) => {
     return acc;
   }, []);
   // и проверка на удаление ключа из первого файла
+  // eslint-disable-next-line array-callback-return
   Object.keys(first).map((key) => {
     if (!Object.keys(second).includes(key)) {
       compare.push(`  - ${key}: ${first[key]}`);
