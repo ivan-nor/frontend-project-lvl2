@@ -11,9 +11,9 @@ const firstYAML = `${__dirname}/__fixtures__/before.yaml`;
 const secondYAML = `${__dirname}/__fixtures__/after.yaml`;
 
 describe('gendiff', () => {
-  // it('JSON', () => {
-  //   assert.equal(gendiff(firstJSON, secondJSON), result);
-  // });
+  it('JSON', () => {
+    assert.equal(gendiff(firstJSON, secondJSON), result);
+  });
   it('YAML', () => {
     assert.equal(gendiff(firstYAML, secondYAML), result);
   });
