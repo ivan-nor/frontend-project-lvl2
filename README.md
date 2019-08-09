@@ -7,3 +7,6 @@
 
 **Usage YAML:**
 [![asciicast](https://asciinema.org/a/OzQfif0W6nbMxLirKBAZXGxJC.svg)](https://asciinema.org/a/OzQfif0W6nbMxLirKBAZXGxJC)
+
+**Usage INI:**
+[![asciicast](https://asciinema.org/a/dyRHzFiOPrHaGFd55vxYREQpA.svg)](https://asciinema.org/a/dyRHzFiOPrHaGFd55vxYREQpA)
