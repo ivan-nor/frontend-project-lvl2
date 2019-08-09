@@ -1,10 +1,13 @@
 import path from 'path';
 import yaml from 'js-yaml';
 import fs from 'fs';
+import ini from 'ini';
+
 
 const mapping = {
-  '.json': obj => JSON.parse(obj),
-  '.yaml': obj => yaml.safeLoad(obj),
+  '.json': item => JSON.parse(item),
+  '.yaml': item => yaml.safeLoad(item),
+  '.ini': item => ini.parse(item),
 };
 
 export default (file) => {
