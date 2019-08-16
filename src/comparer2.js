@@ -1,15 +1,20 @@
 import _ from 'lodash';
 
-const tab = '  ';
+const tab = '..';
 
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 
-const stringify = (item, depthOfTabs) => {
-  if (Object.prototype.toString.call(item) === '[object Object]') {
-    const list = _.keys(item);
-    return `{\n${tab.repeat(depthOfTabs + 2)}${list[0]}: ${item[list[0]]}\n${tab.repeat(depthOfTabs)}}`;
+const stringify = (obj, depthOfTabs) => {
+  if (Object.prototype.toString.call(obj) === '[object Object]') {
+    const list = _.keys(obj);
+    const separator = list.length > 0 ? '\n' : '';
+    const result = list.reduce((acc, key) => {
+      const str = `${separator}${tab.repeat(depthOfTabs + 2)}${key}: ${obj[key]}${separator}`;
+      return `${acc}${str}`;
+    }, '');
+    return `{${result}${tab.repeat(depthOfTabs)}}`;
   }
-  return `${item}`;
+  return `${obj}`;
 };
 
 const render = (first, second) => {
@@ -89,5 +94,4 @@ const parseAst = (ast) => {
   return `\n{\n${iter('', 1, ast)}}`;
 };
 
-
-export { render, parseAst };
+export default (first, second) => parseAst(render(first, second));
