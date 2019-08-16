@@ -18,9 +18,7 @@ const stringify = (obj, depthOfTabs) => {
 };
 
 const render = (first, second) => {
-  const firstKeys = _.keys(first);
-  const secondKeys = _.keys(second);
-  const allKeys = _.union(firstKeys, secondKeys);
+  const allKeys = _.union(_.keys(first), _.keys(second));
   const getFirstValue = key => _.get(first, key);
   const getSecondValue = key => _.get(second, key);
 
