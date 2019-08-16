@@ -6,7 +6,7 @@ import path from 'path';
 import _ from 'lodash';
 import parseFile from '../parsers';
 
-const compareFiles = (first, second) => {
+const compareFlatFiles = (first, second) => {
   const arrToResult = (arr) => {
     if (arr.length === 0) {
       return '';
@@ -47,7 +47,7 @@ const genDiff = (before, after) => {
   const firstParse = parseFile(pathToFirst);
   const secondParse = parseFile(pathToSecond);
 
-  return compareFiles(firstParse, secondParse);
+  return compareFlatFiles(firstParse, secondParse);
 };
 
 program
