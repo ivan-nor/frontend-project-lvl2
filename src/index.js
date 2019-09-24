@@ -11,7 +11,7 @@ const mapping = {
   'json': item => jsonAst(item),
 };
 
-const genDiff = (before, after, format) => {
+const genDiff = (before, after, format = 'recursive') => {
   const pathToFirst = path.resolve(__dirname, process.cwd(), before);
   const pathToSecond = path.resolve(__dirname, process.cwd(), after);
 
