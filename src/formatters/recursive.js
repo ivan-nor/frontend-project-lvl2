@@ -9,7 +9,7 @@ const stringify = (obj, depthOfTabs) => {
     const list = _.keys(obj);
     const separator = list.length > 0 ? '\n' : '';
     const result = list.reduce((acc, key) => {
-      const str = `${tab.repeat(depthOfTabs + 2)}${key}: ${obj[key]}${separator}`;
+      const str = `${tab.repeat(depthOfTabs + 1)}${key}: ${obj[key]}${separator}`;
       return `${acc}${str}`;
     }, '');
     return `{\n${result}${tab.repeat(depthOfTabs)}}`;
