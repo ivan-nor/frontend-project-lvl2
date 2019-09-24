@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 import path from 'path';
 import parseFile from './parsers';
 import recursiveAst from './formatters/recursive';
