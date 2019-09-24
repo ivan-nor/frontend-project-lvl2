@@ -9,7 +9,7 @@ const stringify = (obj, depthOfTabs) => {
     const list = _.keys(obj);
     const separator = list.length > 0 ? '\n' : '';
     const result = list.reduce((acc, key) => {
-      const str = `${tab.repeat(depthOfTabs + 1)}${key}: ${obj[key]}${separator}`;
+      const str = `${tab.repeat(depthOfTabs + 2)}${key}: ${obj[key]}${separator}`;
       return `${acc}${str}`;
     }, '');
     return `{\n${result}${tab.repeat(depthOfTabs)}}`;
@@ -24,11 +24,11 @@ const parseAst = (ast) => {
     }
     const [first, ...rest] = list;
     const { name, type, value } = first;
-    let str;
     const indent = `${tab.repeat(depth)}`;
+    let str;
     // если проверка на массив в VALUE дает массив c объектом, то рекурсия
     if (Array.isArray(value) && isObject(value[0]) && isObject(value[1])) {
-      str = `${tab}${name}: {\n${iter('', depth + 1, value)}${indent}${tab}}`;
+      str = `  ${name}: {\n${iter('', depth + 2, value)}${tab.repeat(depth + 1)}}`;
     }
     if (type === 'added') {
       str = `+ ${name}: ${stringify(value, depth + 1)}`;
@@ -40,13 +40,15 @@ const parseAst = (ast) => {
       str = `+ ${name}: ${stringify(value[0], depth + 1)}\n${indent}- ${name}: ${stringify(value[1], depth + 1)}`;
     }
     if (type === 'unchanged' && !Array.isArray(value)) {
-      str = `${tab}${name}: ${stringify(value, depth + 1)}`;
+      str = `  ${name}: ${stringify(value, depth + 2)}`;
     }
-    const result = `${str}\n`;
+    const result = `${indent}${str}\n`;
 
-    return `${iter(`${acc}${indent}${result}`, depth, rest)}`;
+    return `${iter(`${acc}${result}`, depth, rest)}`;
   };
-  return `\n{\n${iter('', 1, ast)}}`;
+  const result = `${iter('', 1, ast)}`;
+
+  return `\n{\n${result}}`;
 };
 
 export default parseAst;
