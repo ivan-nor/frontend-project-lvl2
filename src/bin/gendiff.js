@@ -1,31 +1,24 @@
 #!/usr/bin/env node
 
-// import fs from 'fs';
 import program from 'commander';
-import path from 'path';
-// import _ from 'lodash';
-import parseFile from '../parsers';
-import compare from '../comparer2';
-
-const genDiff = (before, after) => {
-  const pathToFirst = path.resolve(__dirname, process.cwd(), before);
-  const pathToSecond = path.resolve(__dirname, process.cwd(), after);
-
-  const firstParse = parseFile(pathToFirst);
-  const secondParse = parseFile(pathToSecond);
-
-  return compare(firstParse, secondParse);
-};
+import gendiff from '..';
 
 program
-  .version('0.1.0')
-  .option('-f, --format [type]', 'output format')
-  .description('Compares two configuration files and shows a difference.')
-  .arguments('<firstConfig> <secondConfig>')
-  .action((file1, file2) => {
-    console.log(genDiff(file1, file2));
+  .version('0.0.1')
+  .option('-f, --format [format]', 'change [format] difference')
+  .arguments('<first> <second>')
+  .action((first, second) => {
+    if (first && second) {
+      console.log(gendiff(first, second, program.format));
+    }
   });
+console.log('first', program.first);
+console.log('second', program.second);
+console.log('%s format', program.format);
 
 program.parse(process.argv);
 
-export default genDiff;
+// if (!program.args.length) program.help();
+if (!program.format) {
+  console.log('no choise');
+}
