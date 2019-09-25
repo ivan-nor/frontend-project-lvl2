@@ -1,5 +1,5 @@
 const jsonAst = (ast) => {
-  const result = JSON.stringify(ast);
+  const result = JSON.stringify(ast, null, 2);
   return result;
 };
 
