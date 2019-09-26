@@ -3,18 +3,20 @@ import yaml from 'js-yaml';
 import fs from 'fs';
 import ini from 'ini';
 
-const mapping = {
-  '.json': item => JSON.parse(item),
-  '.ini': item => ini.parse(item),
-  '.yaml': item => yaml.safeLoad(item),
-};
+export default (relativePath) => {
+  const parsers = {
+    '.json': item => JSON.parse(item),
+    '.ini': item => ini.parse(item),
+    '.yaml': item => yaml.safeLoad(item),
+  };
 
-export default (file) => {
-  const extname = path.extname(file);
+  const format = path.extname(relativePath);
 
-  const pathToFile = path.resolve(__dirname, process.cwd(), file);
-  const dataOfFile = fs.readFileSync(pathToFile, 'utf8');
-  const parsingFile = mapping[extname](dataOfFile);
+  const absolutePath = path.resolve(__dirname, process.cwd(), relativePath);
 
-  return parsingFile;
+  const data = fs.readFileSync(absolutePath, 'utf8');
+
+  const parsing = parsers[format](data);
+
+  return parsing;
 };
