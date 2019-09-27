@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const render = (first, second) => {
+const buildInternalTree = (first, second) => {
   const allKeys = _.union(_.keys(first), _.keys(second));
   const result = allKeys.reduce((acc, key) => {
     const node = {
@@ -11,7 +11,7 @@ const render = (first, second) => {
     if (typeof _.get(first, key) === 'object' && typeof _.get(second, key) === 'object') {
       // оба значения объекты
       node.type = 'unchanged';
-      node.value = render(_.get(first, key), _.get(second, key));
+      node.value = buildInternalTree(_.get(first, key), _.get(second, key));
       return [...acc, node];
     }
     if (_.get(first, key) === _.get(second, key)) {
@@ -40,4 +40,4 @@ const render = (first, second) => {
   return result;
 };
 
-export default render;
+export default buildInternalTree;
