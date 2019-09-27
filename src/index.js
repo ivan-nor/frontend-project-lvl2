@@ -1,24 +1,32 @@
 import path from 'path';
-import parseFile from './parsers';
+import fs from 'fs';
+import parse from './parsers';
 import recursiveAst from './formatters/recursive';
 import plainAst from './formatters/plain';
-import render from './renderer';
+import buildInternalTree from './builder';
 import jsonAst from './formatters/json';
 
-const genDiff = (before, after, format = 'recursive') => {
+const buildDataObj = (relativePath) => {
+  const absolutePath = path.resolve(__dirname, process.cwd(), relativePath);
+  const extention = path.extname(relativePath);
+  const data = fs.readFileSync(absolutePath, 'utf8');
+  return { data, extention };
+};
+
+const genDiff = (before, after, formatter = 'recursive') => {
   const formatters = {
     plain: item => plainAst(item),
     recursive: item => recursiveAst(item),
     json: item => jsonAst(item),
   };
 
-  const pathToFirst = path.resolve(__dirname, process.cwd(), before);
-  const pathToSecond = path.resolve(__dirname, process.cwd(), after);
+  const firstBuilded = buildDataObj(before);
+  const secondBuilded = buildDataObj(after);
 
-  const firstParse = parseFile(pathToFirst);
-  const secondParse = parseFile(pathToSecond);
+  const firstParse = parse(firstBuilded);
+  const secondParse = parse(secondBuilded);
 
-  return formatters[format](render(firstParse, secondParse));
+  return formatters[formatter](buildInternalTree(firstParse, secondParse));
 };
 
 export default genDiff;
