@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 import path from 'path';
 import parseFile from './parsers';
 import recursiveAst from './formatters/recursive';
@@ -8,9 +7,9 @@ import jsonAst from './formatters/json';
 
 const genDiff = (before, after, format = 'recursive') => {
   const formatters = {
-    'plain': item => plainAst(item),
-    'recursive': item => recursiveAst(item),
-    'json': item => jsonAst(item),
+    plain: item => plainAst(item),
+    recursive: item => recursiveAst(item),
+    json: item => jsonAst(item),
   };
 
   const pathToFirst = path.resolve(__dirname, process.cwd(), before);
