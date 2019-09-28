@@ -25,9 +25,7 @@ const plainAst = (ast) => {
     if (type === 'unchanged' && !Array.isArray(value)) {
       str = '';
     }
-    const result = `${str}`;
-
-    return `${iter(`${acc}${result}`, depthName, rest)}`;
+    return `${iter(`${acc}${str}`, depthName, rest)}`;
   };
   return `${iter('', '', ast)}`;
 };
