@@ -2,11 +2,11 @@ import fs from 'fs';
 import genDiff from '../src';
 
 describe('gendiff', () => {
-  it('nested files with nestedResult.txt, formatter - recursive', () => {
-    const nestedResult = fs.readFileSync(`${__dirname}/__fixtures__/nested/recursiveResult.txt`, 'utf8');
+  it('nested files with nestedResult.txt, formatter - plain', () => {
+    const nestedResult = fs.readFileSync(`${__dirname}/__fixtures__/nested/plainResult.txt`, 'utf8');
     const pathToFirst = `${__dirname}/__fixtures__/nested/before.json`;
     const pathToSecond = `${__dirname}/__fixtures__/nested/after.json`;
-    expect(genDiff(pathToFirst, pathToSecond, 'recursive')).toBe(nestedResult);
+    expect(genDiff(pathToFirst, pathToSecond, 'plain')).toBe(nestedResult);
   });
 
   it('flat files with plainFlatResult.txt, formatter - plain', () => {
@@ -28,5 +28,12 @@ describe('gendiff', () => {
     const pathToSecond = `${__dirname}/__fixtures__/nested/after.yaml`;
     const flatResult = fs.readFileSync(`${__dirname}/__fixtures__/nested/jsonResult.txt`, 'utf8');
     expect(genDiff(pathToFirst, pathToSecond, 'json')).toBe(flatResult);
+  });
+
+  it('nested files with recursiveResult.txt, formatter - recursive', () => {
+    const nestedResult = fs.readFileSync(`${__dirname}/__fixtures__/nested/recursiveResult.txt`, 'utf8');
+    const pathToFirst = `${__dirname}/__fixtures__/nested/before.json`;
+    const pathToSecond = `${__dirname}/__fixtures__/nested/after.json`;
+    expect(genDiff(pathToFirst, pathToSecond, 'recursive')).toBe(nestedResult);
   });
 });
