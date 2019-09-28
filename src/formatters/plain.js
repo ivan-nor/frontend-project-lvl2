@@ -9,7 +9,6 @@ const plainAst = (ast) => {
     const { name, type, value } = first;
     const newDepthName = !depthName ? `${name}` : `${depthName}.${name}`;
     let str;
-    // если проверка на массив в VALUE дает массив c объектом, то рекурсия
     if (Array.isArray(value) && isObject(value[0]) && isObject(value[1])) {
       str = `${iter('', newDepthName, value)}`;
     }
