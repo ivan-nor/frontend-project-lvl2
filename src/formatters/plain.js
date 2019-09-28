@@ -2,9 +2,7 @@ const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]
 
 const plainAst = (ast) => {
   const iter = (acc, depthName, list) => {
-    if (list.length === 0) {
-      return acc;
-    }
+    if (list.length === 0) return acc;
     const [first, ...rest] = list;
     const { name, type, value } = first;
     const newDepthName = !depthName ? `${name}` : `${depthName}.${name}`;
