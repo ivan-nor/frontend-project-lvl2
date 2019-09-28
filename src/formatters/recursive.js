@@ -19,14 +19,11 @@ const stringify = (obj, depthOfTabs) => {
 
 const parseAst = (ast) => {
   const iter = (acc, depth, list) => {
-    if (list.length === 0) {
-      return acc;
-    }
+    if (list.length === 0) return acc;
     const [first, ...rest] = list;
     const { name, type, value } = first;
     const indent = `${tab.repeat(depth)}`;
     let str;
-    // если проверка на массив в VALUE дает массив c объектом, то рекурсия
     if (Array.isArray(value) && isObject(value[0]) && isObject(value[1])) {
       str = `  ${name}: {\n${iter('', depth + 2, value)}${tab.repeat(depth + 1)}}`;
     }
@@ -42,13 +39,9 @@ const parseAst = (ast) => {
     if (type === 'unchanged' && !Array.isArray(value)) {
       str = `  ${name}: ${stringify(value, depth + 2)}`;
     }
-    const result = `${indent}${str}\n`;
-
-    return `${iter(`${acc}${result}`, depth, rest)}`;
+    return `${iter(`${acc}${indent}${str}\n`, depth, rest)}`;
   };
-  const result = `${iter('', 1, ast)}`;
-
-  return `\n{\n${result}}`;
+  return `\n{\n${iter('', 1, ast)}}`;
 };
 
 export default parseAst;
