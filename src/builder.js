@@ -3,9 +3,7 @@ import _ from 'lodash';
 const buildInternalTree = (first, second) => {
   const allKeys = _.union(_.keys(first), _.keys(second));
   const result = allKeys.reduce((acc, key) => {
-    const node = {
-      name: key,
-    };
+    const node = { name: key };
     if (typeof _.get(first, key) === 'object' && typeof _.get(second, key) === 'object') {
       node.type = 'unchanged';
       node.value = buildInternalTree(_.get(first, key), _.get(second, key));
