@@ -13,7 +13,7 @@ const buildDataObj = (relativePath) => {
   return { data, extention };
 };
 
-const genDiff = (before, after, formatter = 'recursive') => {
+const genDiff = (before, after, formatter) => {
   const formatters = {
     plain: item => plainAst(item),
     recursive: item => recursiveAst(item),
@@ -26,7 +26,8 @@ const genDiff = (before, after, formatter = 'recursive') => {
   const firstParse = parse(firstBuilded);
   const secondParse = parse(secondBuilded);
 
-  return formatters[formatter](buildInternalTree(firstParse, secondParse));
+  const result = formatters[formatter](buildInternalTree(firstParse, secondParse));
+  return result;
 };
 
 export default genDiff;
