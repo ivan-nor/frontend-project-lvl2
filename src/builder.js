@@ -8,7 +8,7 @@ const buildInternalTree = (beforeData, afterData) => {
         return {
           name,
           type: 'unchanged',
-          value: buildInternalTree(beforeData[name], afterData[name])
+          value: buildInternalTree(beforeData[name], afterData[name]),
         };
       }
       if (beforeData[name] === afterData[name]) {
@@ -32,14 +32,12 @@ const buildInternalTree = (beforeData, afterData) => {
           value: afterData[name],
         };
       }
-      if (beforeData[name] !== afterData[name]) {
-        return {
-          name,
-          type: 'changed',
-          value: afterData[name],
-          prevValue: beforeData[name],
-        };
-      }
+      return {
+        name,
+        type: 'changed',
+        value: afterData[name],
+        prevValue: beforeData[name],
+      };
     });
   return result;
 };
