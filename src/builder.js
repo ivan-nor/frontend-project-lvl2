@@ -3,40 +3,41 @@ import _ from 'lodash';
 const buildInternalTree = (beforeData, afterData) => {
   const result = _
     .union(_.keys(beforeData), _.keys(afterData))
-    .map((nodeName) => {
-      if (typeof beforeData[nodeName] === 'object' && typeof afterData[nodeName] === 'object') {
+    .map((key) => {
+      const name = key;
+      if (typeof beforeData[key] === 'object' && typeof afterData[key] === 'object') {
         return {
-          nodeName,
+          name,
           type: 'unchanged',
-          value: buildInternalTree(beforeData[nodeName], afterData[nodeName]),
+          value: buildInternalTree(beforeData[key], afterData[key]),
         };
       }
-      if (beforeData[nodeName] === afterData[nodeName]) {
+      if (beforeData[key] === afterData[key]) {
         return {
-          nodeName,
+          name,
           type: 'unchanged',
-          value: beforeData[nodeName],
+          value: beforeData[key],
         };
       }
-      if (!_.has(afterData, nodeName) && _.has(beforeData, nodeName)) {
+      if (!_.has(afterData, name) && _.has(beforeData, name)) {
         return {
-          nodeName,
+          name,
           type: 'deleted',
-          value: beforeData[nodeName],
+          value: beforeData[key],
         };
       }
-      if (!_.has(beforeData, nodeName) && _.has(afterData, nodeName)) {
+      if (!_.has(beforeData, name) && _.has(afterData, name)) {
         return {
-          nodeName,
+          name,
           type: 'added',
-          value: afterData[nodeName],
+          value: afterData[key],
         };
       }
       return {
-        nodeName,
+        name,
         type: 'changed',
-        value: afterData[nodeName],
-        prevValue: beforeData[nodeName],
+        value: afterData[key],
+        prevValue: beforeData[key],
       };
     });
   return result;
