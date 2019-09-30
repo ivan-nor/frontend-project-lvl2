@@ -6,10 +6,8 @@ import gendiff from '..';
 program
   .version('0.0.1')
   .option('-f, --format [param]', 'change [param] difference', 'recursive')
-  .action((first, second) => {
-    if (first && second) {
-      console.log(gendiff(first, second, program.format));
-    }
+  .action((before, after) => {
+    console.log(gendiff(before, after, program.format));
   });
 
 program.parse(process.argv);
