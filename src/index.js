@@ -6,27 +6,26 @@ import plainAst from './formatters/plain';
 import buildInternalTree from './builder';
 import jsonAst from './formatters/json';
 
-const buildDataObj = (relativePath) => {
+const getData = (relativePath) => {
   const absolutePath = path.resolve(__dirname, process.cwd(), relativePath);
-  const extention = path.extname(relativePath);
   const data = fs.readFileSync(absolutePath, 'utf8');
-  return { data, extention };
+  return data;
 };
 
-const genDiff = (before, after, formatter) => {
+const genDiff = (before, after, format) => {
   const formatters = {
-    plain: item => plainAst(item),
-    recursive: item => recursiveAst(item),
-    json: item => jsonAst(item),
+    plain: plainAst,
+    recursive: recursiveAst,
+    json: jsonAst,
   };
 
-  const firstBuilded = buildDataObj(before);
-  const secondBuilded = buildDataObj(after);
+  const firstData = getData(before);
+  const secondData = getData(after);
 
-  const firstParse = parse(firstBuilded);
-  const secondParse = parse(secondBuilded);
+  const firstParse = parse(firstData, path.extname(before));
+  const secondParse = parse(secondData, path.extname(after));
 
-  const result = formatters[formatter](buildInternalTree(firstParse, secondParse));
+  const result = formatters[format](buildInternalTree(firstParse, secondParse));
   return result;
 };
 
