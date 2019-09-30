@@ -16,12 +16,10 @@
       {
         "name": "setting3",
         "type": "changed",
-        "value": [
-          {
-            "key": "value"
-          },
-          true
-        ]
+        "value": {
+          "key": "value"
+        },
+        "prevValue": true
       },
       {
         "name": "setting6",
@@ -65,10 +63,8 @@
       {
         "name": "baz",
         "type": "changed",
-        "value": [
-          "bars",
-          "bas"
-        ]
+        "value": "bars",
+        "prevValue": "bas"
       },
       {
         "name": "foo",
@@ -78,12 +74,10 @@
       {
         "name": "nest",
         "type": "changed",
-        "value": [
-          "str",
-          {
-            "key": "value"
-          }
-        ]
+        "value": "str",
+        "prevValue": {
+          "key": "value"
+        }
       }
     ]
   },
