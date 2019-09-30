@@ -4,10 +4,12 @@ const plainAst = (ast) => {
   const iter = (acc, depthName, list) => {
     if (list.length === 0) return acc;
     const [first, ...rest] = list;
-    const { name, type, value } = first;
+    const {
+      name, type, value, prevValue,
+    } = first;
     const newDepthName = !depthName ? `${name}` : `${depthName}.${name}`;
     let str;
-    if (Array.isArray(value) && isObject(value[0]) && isObject(value[1])) {
+    if (type === 'unchanged' && Array.isArray(value)) {
       str = `${iter('', newDepthName, value)}`;
     }
     if (type === 'added') {
@@ -17,7 +19,7 @@ const plainAst = (ast) => {
       str = `\nProperty '${newDepthName}' was removed`;
     }
     if (type === 'changed') {
-      str = `\nProperty '${newDepthName}' was updated. From ${isObject(value[1]) ? '[complex value]' : value[1]} to ${isObject(value[0]) ? '[complex value]' : value[0]}`;
+      str = `\nProperty '${newDepthName}' was updated. From ${isObject(prevValue) ? '[complex value]' : prevValue} to ${isObject(value) ? '[complex value]' : value}`;
     }
     if (type === 'unchanged' && !Array.isArray(value)) {
       str = '';
