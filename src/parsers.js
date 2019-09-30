@@ -1,14 +1,12 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-export default (obj) => {
+export default (data, extention) => {
   const parsers = {
-    '.json': item => JSON.parse(item),
-    '.ini': item => ini.parse(item),
-    '.yaml': item => yaml.safeLoad(item),
+    '.json': JSON.parse,
+    '.ini': ini.parse,
+    '.yaml': yaml.safeLoad,
   };
-
-  const { data, extention } = obj;
 
   const parse = parsers[extention](data);
 
