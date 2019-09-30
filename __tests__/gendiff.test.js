@@ -1,32 +1,27 @@
 import fs from 'fs';
 import genDiff from '../src';
 
+const getPath = filename => `${__dirname}/__fixtures__/nested/${filename}`;
+const getResultData = filename => fs.readFileSync(`${__dirname}/__fixtures__/nested/${filename}`, 'utf8');
+
 describe('gendiff', () => {
   it('json files, formatter - plain', () => {
-    const result = fs.readFileSync(`${__dirname}/__fixtures__/nested/plainResult.txt`, 'utf8');
-    const pathToFirst = `${__dirname}/__fixtures__/nested/before.json`;
-    const pathToSecond = `${__dirname}/__fixtures__/nested/after.json`;
-    expect(genDiff(pathToFirst, pathToSecond, 'plain')).toBe(result);
+    expect(genDiff(getPath('before.json'), getPath('after.json'), 'plain'))
+      .toBe(getResultData('plainResult.txt'));
   });
 
   it('ini files, formatter - recursive', () => {
-    const pathToFirst = `${__dirname}/__fixtures__/nested/before.ini`;
-    const pathToSecond = `${__dirname}/__fixtures__/nested/after.ini`;
-    const result = fs.readFileSync(`${__dirname}/__fixtures__/nested/recursiveIniResult.txt`, 'utf8');
-    expect(genDiff(pathToFirst, pathToSecond, 'recursive')).toBe(result);
+    expect(genDiff(getPath('before.ini'), getPath('after.ini'), 'recursive'))
+      .toBe(getResultData('recursiveIniResult.txt'));
   });
 
   it('yaml files, formatter - json', () => {
-    const pathToFirst = `${__dirname}/__fixtures__/nested/before.yaml`;
-    const pathToSecond = `${__dirname}/__fixtures__/nested/after.yaml`;
-    const result = fs.readFileSync(`${__dirname}/__fixtures__/nested/jsonResult.txt`, 'utf8');
-    expect(genDiff(pathToFirst, pathToSecond, 'json')).toBe(result);
+    expect(genDiff(getPath('before.yaml'), getPath('after.yaml'), 'json'))
+      .toBe(getResultData('jsonResult.txt'));
   });
 
   it('json files, formatter - recursive', () => {
-    const result = fs.readFileSync(`${__dirname}/__fixtures__/nested/recursiveResult.txt`, 'utf8');
-    const pathToFirst = `${__dirname}/__fixtures__/nested/before.json`;
-    const pathToSecond = `${__dirname}/__fixtures__/nested/after.json`;
-    expect(genDiff(pathToFirst, pathToSecond, 'recursive')).toBe(result);
+    expect(genDiff(getPath('before.json'), getPath('after.json'), 'recursive'))
+      .toBe(getResultData('recursiveResult.txt'));
   });
 });
