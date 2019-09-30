@@ -1,36 +1,45 @@
 import _ from 'lodash';
 
-const buildInternalTree = (first, second) => {
-  const allKeys = _.union(_.keys(first), _.keys(second));
-  const result = allKeys.reduce((acc, key) => {
-    const node = { name: key };
-    if (typeof first[key] === 'object' && typeof second[key] === 'object') {
-      node.type = 'unchanged';
-      node.value = buildInternalTree(first[key], second[key]);
-      return [...acc, node];
+const buildInternalTree = (beforeData, afterData) => {
+  const allKeys = _.union(_.keys(beforeData), _.keys(afterData));
+  const result = allKeys.map((name) => {
+    if (typeof beforeData[name] === 'object' && typeof afterData[name] === 'object') {
+      return {
+        name,
+        type: 'unchanged',
+        value: buildInternalTree(beforeData[name], afterData[name])
+      };
     }
-    if (first[key] === second[key]) {
-      node.type = 'unchanged';
-      node.value = first[key];
-      return [...acc, node];
+    if (beforeData[name] === afterData[name]) {
+      return {
+        name,
+        type: 'unchanged',
+        value: beforeData[name],
+      };
     }
-    if (!_.has(second, key) && _.has(first, key)) {
-      node.type = 'deleted';
-      node.value = first[key];
-      return [...acc, node];
+    if (!_.has(afterData, name) && _.has(beforeData, name)) {
+      return {
+        name,
+        type: 'deleted',
+        value: beforeData[name],
+      };
     }
-    if (!_.has(first, key) && _.has(second, key)) {
-      node.type = 'added';
-      node.value = second[key];
-      return [...acc, node];
+    if (!_.has(beforeData, name) && _.has(afterData, name)) {
+      return {
+        name,
+        type: 'added',
+        value: afterData[name],
+      };
     }
-    if (first[key] !== second[key]) {
-      node.type = 'changed';
-      node.value = second[key];
-      node.prevValue = first[key];
+    if (beforeData[name] !== afterData[name]) {
+      return {
+        name,
+        type: 'changed',
+        value: afterData[name],
+        prevValue: beforeData[name],
+      };
     }
-    return [...acc, node];
-  }, []);
+  });
   return result;
 };
 
