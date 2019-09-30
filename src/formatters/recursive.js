@@ -2,8 +2,6 @@ import _ from 'lodash';
 
 const tab = '  ';
 
-const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
-
 const stringify = (obj, depthOfTabs) => {
   if (Object.prototype.toString.call(obj) === '[object Object]') {
     const list = _.keys(obj);
