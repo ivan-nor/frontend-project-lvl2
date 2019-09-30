@@ -4,29 +4,30 @@ const buildInternalTree = (first, second) => {
   const allKeys = _.union(_.keys(first), _.keys(second));
   const result = allKeys.reduce((acc, key) => {
     const node = { name: key };
-    if (typeof _.get(first, key) === 'object' && typeof _.get(second, key) === 'object') {
+    if (typeof first[key] === 'object' && typeof second[key] === 'object') {
       node.type = 'unchanged';
-      node.value = buildInternalTree(_.get(first, key), _.get(second, key));
+      node.value = buildInternalTree(first[key], second[key]);
       return [...acc, node];
     }
-    if (_.get(first, key) === _.get(second, key)) {
+    if (first[key] === second[key]) {
       node.type = 'unchanged';
-      node.value = _.get(first, key);
+      node.value = first[key];
       return [...acc, node];
     }
     if (!_.has(second, key) && _.has(first, key)) {
       node.type = 'deleted';
-      node.value = _.get(first, key);
+      node.value = first[key];
       return [...acc, node];
     }
     if (!_.has(first, key) && _.has(second, key)) {
       node.type = 'added';
-      node.value = _.get(second, key);
+      node.value = second[key];
       return [...acc, node];
     }
-    if (_.get(first, key) !== _.get(second, key)) {
+    if (first[key] !== second[key]) {
       node.type = 'changed';
-      node.value = [_.get(second, key), _.get(first, key)];
+      node.value = second[key];
+      node.prevValue = first[key];
     }
     return [...acc, node];
   }, []);
