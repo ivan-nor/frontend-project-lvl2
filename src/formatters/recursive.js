@@ -24,9 +24,6 @@ const parseAst = (ast) => {
     } = first;
     const indent = `${tab.repeat(depth)}`;
     let str;
-    if (type === 'unchanged' && Array.isArray(value)) {
-      str = `  ${name}: {\n${iter('', depth + 2, value)}${tab.repeat(depth + 1)}}`;
-    }
     if (type === 'added') {
       str = `+ ${name}: ${stringify(value, depth + 1)}`;
     }
@@ -36,7 +33,9 @@ const parseAst = (ast) => {
     if (type === 'changed') {
       str = `+ ${name}: ${stringify(value, depth + 1)}\n${indent}- ${name}: ${stringify(prevValue, depth + 1)}`;
     }
-    if (type === 'unchanged' && !Array.isArray(value)) {
+    if (type === 'unchanged' && Array.isArray(value)) {
+      str = `  ${name}: {\n${iter('', depth + 2, value)}${tab.repeat(depth + 1)}}`;
+    } else if (type === 'unchanged' && !Array.isArray(value)) {
       str = `  ${name}: ${stringify(value, depth + 2)}`;
     }
     return `${iter(`${acc}${indent}${str}\n`, depth, rest)}`;
