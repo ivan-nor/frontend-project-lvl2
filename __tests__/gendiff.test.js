@@ -1,27 +1,23 @@
 import fs from 'fs';
 import genDiff from '../src';
 
-const getPath = filename => `${__dirname}/__fixtures__/nested/${filename}`;
+const getPathToBefore = extention => `${__dirname}/__fixtures__/nested/before${extention}`;
+const getPathToAfter = extention => `${__dirname}/__fixtures__/nested/after${extention}`;
 const getResultData = filename => fs.readFileSync(`${__dirname}/__fixtures__/nested/${filename}`, 'utf8');
 
-describe('gendiff', () => {
-  it('json files, formatter - plain', () => {
-    expect(genDiff(getPath('before.json'), getPath('after.json'), 'plain'))
-      .toBe(getResultData('plainResult.txt'));
-  });
+describe.each`
 
-  it('ini files, formatter - recursive', () => {
-    expect(genDiff(getPath('before.ini'), getPath('after.ini'), 'recursive'))
-      .toBe(getResultData('recursiveIniResult.txt'));
-  });
+    extention   |     format     |       expected
+  ${'.json'}    | ${'plain'}     | ${getResultData('plainResult.txt')}
+  ${'.ini'}     | ${'recursive'} | ${getResultData('recursiveIniResult.txt')}
+  ${'.yaml'}    | ${'json'}      | ${getResultData('jsonResult.txt')}
+  ${'.json'}    | ${'recursive'} | ${getResultData('recursiveResult.txt')}
 
-  it('yaml files, formatter - json', () => {
-    expect(genDiff(getPath('before.yaml'), getPath('after.yaml'), 'json'))
-      .toBe(getResultData('jsonResult.txt'));
-  });
+`('gendiff', ({ extention, format, expected }) => {
+  test(`${extention} files, formatter - ${format}`, () => {
+    const before = getPathToBefore(extention);
+    const after = getPathToAfter(extention);
 
-  it('json files, formatter - recursive', () => {
-    expect(genDiff(getPath('before.json'), getPath('after.json'), 'recursive'))
-      .toBe(getResultData('recursiveResult.txt'));
+    expect(genDiff(before, after, format)).toBe(expected);
   });
 });
