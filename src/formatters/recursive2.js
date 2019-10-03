@@ -13,31 +13,31 @@ const stringify = (obj, depthOfTabs) => {
 };
 
 const astToRecursive = (ast) => {
-  const iter = (tree, depth) => {
-    const nodes = tree.reduce((acc, {
+  const iter = (tree, depthIndent = 1) => {
+    const nodes = tree.map(({
       name, type, nextValue, prevValue,
     }) => {
-      const indent = tab.repeat(depth);
+      const indent = tab.repeat(depthIndent);
       switch (type) {
         case 'nested': {
-          return [...acc, `${indent}  ${name}: ${iter(nextValue, depth + 2)}${'  '.repeat(depth + 1)}}\n`];
+          return `${indent}  ${name}: ${iter(nextValue, depthIndent + 2)}${'  '.repeat(depthIndent + 1)}}\n`;
         }
         case 'added': {
-          return [...acc, `${indent}+ ${name}: ${stringify(nextValue, depth + 1)}\n`];
+          return `${indent}+ ${name}: ${stringify(nextValue, depthIndent + 1)}\n`;
         }
         case 'deleted': {
-          return [...acc, `${indent}- ${name}: ${stringify(nextValue, depth + 1)}\n`];
+          return `${indent}- ${name}: ${stringify(nextValue, depthIndent + 1)}\n`;
         }
         case 'changed': {
-          return [...acc, `${indent}+ ${name}: ${stringify(nextValue, depth + 1)}\n${indent}- ${name}: ${stringify(prevValue, depth + 1)}\n`];
+          return `${indent}+ ${name}: ${stringify(nextValue, depthIndent + 1)}\n${indent}- ${name}: ${stringify(prevValue, depthIndent + 1)}\n`;
         }
         case 'unchanged': {
-          return [...acc, `${indent}  ${name}: ${stringify(nextValue, depth + 2)}\n`];
+          return `${indent}  ${name}: ${stringify(nextValue, depthIndent + 2)}\n`;
         }
         default:
-          return acc;
+          return '';
       }
-    }, [], 1);
+    });
     return `{\n${nodes.join('')}`;
   };
   const resultStr = iter(ast, 1);

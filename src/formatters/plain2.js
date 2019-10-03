@@ -1,37 +1,37 @@
 import _ from 'lodash';
 
-const plainAst = (ast) => {
-  const iter = (accName, tree) => {
-    const nodes = tree.reduce((acc, {
+const astToPlain = (ast) => {
+  const iter = (tree, accName = '') => {
+    const nodes = tree.map(({
       name, type, nextValue, prevValue,
     }) => {
       const newAccName = !accName ? `${name}` : `${accName}.${name}`;
       switch (type) {
         case 'nested': {
-          return [...acc, iter(newAccName, nextValue)];
+          return iter(nextValue, newAccName);
         }
         case 'unchanged': {
-          return acc;
+          return '';
         }
         case 'added': {
           const newValue = _.isObject(nextValue) ? '[complex value]' : nextValue;
-          return [...acc, `\nProperty '${newAccName}' was added with value: ${newValue}`];
+          return `\nProperty '${newAccName}' was added with value: ${newValue}`;
         }
         case 'deleted': {
-          return [...acc, `\nProperty '${newAccName}' was removed`];
+          return `\nProperty '${newAccName}' was removed`;
         }
         case 'changed': {
           const newPrevValue = _.isObject(prevValue) ? '[complex value]' : prevValue;
           const newNextValue = _.isObject(nextValue) ? '[complex value]' : nextValue;
-          return [...acc, `\nProperty '${newAccName}' was updated. From ${newPrevValue} to ${newNextValue}`];
+          return `\nProperty '${newAccName}' was updated. From ${newPrevValue} to ${newNextValue}`;
         }
         default:
-          return acc;
+          return '';
       }
-    }, []);
+    });
     return nodes.join('');
   };
-  return iter('', ast);
+  return iter(ast, '');
 };
 
-export default plainAst;
+export default astToPlain;
