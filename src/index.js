@@ -1,10 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import parse from './parsers';
-import recursiveAst from './formatters/recursive';
-import plainAst from './formatters/plain';
 import buildInternalTree from './builder';
-import jsonAst from './formatters/json';
+import getFormatter from './formatters';
 
 const getData = (relativePath) => {
   const absolutePath = path.resolve(__dirname, process.cwd(), relativePath);
@@ -12,20 +10,17 @@ const getData = (relativePath) => {
   return data;
 };
 
-const genDiff = (before, after, format) => {
-  const formatters = {
-    plain: plainAst,
-    recursive: recursiveAst,
-    json: jsonAst,
-  };
+const genDiff = (pathToBefore, pathToAfter, format) => {
+  const firstData = getData(pathToBefore);
+  const secondData = getData(pathToAfter);
 
-  const firstData = getData(before);
-  const secondData = getData(after);
+  const firstParsingInObj = parse(firstData, path.extname(pathToBefore));
+  const secondParsingInObj = parse(secondData, path.extname(pathToAfter));
 
-  const firstParse = parse(firstData, path.extname(before));
-  const secondParse = parse(secondData, path.extname(after));
+  const formatter = getFormatter(format);
 
-  const result = formatters[format](buildInternalTree(firstParse, secondParse));
+  const result = formatter(buildInternalTree(firstParsingInObj, secondParsingInObj));
+
   return result;
 };
 
