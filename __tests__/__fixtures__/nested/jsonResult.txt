@@ -1,56 +1,56 @@
 [
   {
     "name": "common",
-    "type": "unchanged",
-    "value": [
+    "type": "nested",
+    "nextValue": [
       {
         "name": "setting1",
         "type": "unchanged",
-        "value": "Value 1"
+        "nextValue": "Value 1"
       },
       {
         "name": "setting2",
         "type": "deleted",
-        "value": "200"
+        "nextValue": "200"
       },
       {
         "name": "setting3",
         "type": "changed",
-        "value": {
+        "nextValue": {
           "key": "value"
         },
         "prevValue": true
       },
       {
         "name": "setting6",
-        "type": "unchanged",
-        "value": [
+        "type": "nested",
+        "nextValue": [
           {
             "name": "key",
             "type": "unchanged",
-            "value": "value"
+            "nextValue": "value"
           },
           {
             "name": "ops",
             "type": "added",
-            "value": "vops"
+            "nextValue": "vops"
           }
         ]
       },
       {
         "name": "follow",
         "type": "added",
-        "value": false
+        "nextValue": false
       },
       {
         "name": "setting4",
         "type": "added",
-        "value": "blah blah"
+        "nextValue": "blah blah"
       },
       {
         "name": "setting5",
         "type": "added",
-        "value": {
+        "nextValue": {
           "key5": "value5"
         }
       }
@@ -58,23 +58,23 @@
   },
   {
     "name": "group1",
-    "type": "unchanged",
-    "value": [
+    "type": "nested",
+    "nextValue": [
       {
         "name": "baz",
         "type": "changed",
-        "value": "bars",
+        "nextValue": "bars",
         "prevValue": "bas"
       },
       {
         "name": "foo",
         "type": "unchanged",
-        "value": "bar"
+        "nextValue": "bar"
       },
       {
         "name": "nest",
         "type": "changed",
-        "value": "str",
+        "nextValue": "str",
         "prevValue": {
           "key": "value"
         }
@@ -84,14 +84,14 @@
   {
     "name": "group2",
     "type": "deleted",
-    "value": {
+    "nextValue": {
       "abc": "12345"
     }
   },
   {
     "name": "group3",
     "type": "added",
-    "value": {
+    "nextValue": {
       "fee": "100500"
     }
   }
