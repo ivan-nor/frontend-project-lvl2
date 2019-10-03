@@ -49,22 +49,6 @@ const parseAst = (ast) => {
         return acc;
       }
     }
-    // console.log(newAcc);
-    // let str;
-    // if (type === 'added') {
-    //   str = `+ ${name}: ${stringify(value, depth + 1)}`;
-    // }
-    // if (type === 'deleted') {
-    //   str = `- ${name}: ${stringify(value, depth + 1)}`;
-    // }
-    // if (type === 'changed') {
-    //   str = `+ ${name}: ${stringify(value, depth + 1)}\n${indent}- ${name}: ${stringify(prevValue, depth + 1)}`;
-    // }
-    // if (type === 'unchanged' && Array.isArray(value)) {
-    //   str = `  ${name}: {\n${iter('', depth + 2, value)}${tab.repeat(depth + 1)}}`;
-    // } else if (type === 'unchanged' && !Array.isArray(value)) {
-    //   str = `  ${name}: ${stringify(value, depth + 2)}`;
-    // }
     return `${iter(`${acc}${indent}${newAcc.join('')}\n`, depth, rest)}`;
   };
   return `\n{\n${iter('', 1, ast)}}`;
