@@ -1,4 +1,4 @@
-const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
+import _ from 'lodash';
 
 const plainAst = (ast) => {
   const iter = (acc, depthName, list) => {
@@ -10,20 +10,23 @@ const plainAst = (ast) => {
     const newDepthName = !depthName ? `${name}` : `${depthName}.${name}`;
     let str;
     if (type === 'unchanged') {
-      str = !Array.isArray(value) ? '' : `${iter('', newDepthName, value)}`;
+      str = '';
+    }
+    if (type === 'nested') {
+      str = `${iter('', newDepthName, value)}`;
     }
     if (type === 'added') {
-      str = `\nProperty '${newDepthName}' was added with value: ${isObject(value) ? '[complex value]' : value}`;
+      str = `\nProperty '${newDepthName}' was added with value: ${_.isObject(value) ? '[complex value]' : value}`;
     }
     if (type === 'deleted') {
       str = `\nProperty '${newDepthName}' was removed`;
     }
     if (type === 'changed') {
-      str = `\nProperty '${newDepthName}' was updated. From ${isObject(prevValue) ? '[complex value]' : prevValue} to ${isObject(value) ? '[complex value]' : value}`;
+      str = `\nProperty '${newDepthName}' was updated. From ${_.isObject(prevValue) ? '[complex value]' : prevValue} to ${_.isObject(value) ? '[complex value]' : value}`;
     }
     return `${iter(`${acc}${str}`, depthName, rest)}`;
   };
-  return `${iter('', '', ast)}`;
+  return iter('', '', ast);
 };
 
 export default plainAst;
