@@ -7,18 +7,19 @@ const getResultData = filename => fs.readFileSync(`${__dirname}/__fixtures__/nes
 
 describe.each`
 
-    extention   |     format     |       expectedValue
-  ${'.json'}    | ${'plain'}     | ${getResultData('plainResult.txt')}
-  ${'.ini'}     | ${'recursive'} | ${getResultData('recursiveIniResult.txt')}
-  ${'.yaml'}    | ${'json'}      | ${getResultData('jsonResult.txt')}
-  ${'.json'}    | ${'recursive'} | ${getResultData('recursiveResult.txt')}
+    extention   |     format     |     pathToResult
+  ${'.json'}    | ${'plain'}     | ${'plainResult.txt'}
+  ${'.ini'}     | ${'recursive'} | ${'recursiveIniResult.txt'}
+  ${'.yaml'}    | ${'json'}      | ${'jsonResult.txt'}
+  ${'.json'}    | ${'recursive'} | ${'recursiveResult.txt'}
 
-`('gendiff', ({ extention, format, expectedValue }) => {
+`('gendiff', ({ extention, format, pathToResult }) => {
   test(`${extention} files, formatter - ${format}`, () => {
     const before = getPathToBefore(extention);
     const after = getPathToAfter(extention);
 
     const actualValue = genDiff(before, after, format);
+    const expectedValue = getResultData(pathToResult);
 
     expect(actualValue).toBe(expectedValue);
   });
