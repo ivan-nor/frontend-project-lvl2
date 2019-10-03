@@ -5,38 +5,38 @@ const buildInternalTree = (beforeData, afterData) => {
     .union(_.keys(beforeData), _.keys(afterData))
     .map((key) => {
       const name = key;
-      if (typeof beforeData[key] === 'object' && typeof afterData[key] === 'object') {
+      if (_.isObject(beforeData[key]) && _.isObject(afterData[key])) {
         return {
           name,
-          type: 'unchanged',
-          value: buildInternalTree(beforeData[key], afterData[key]),
+          type: 'nested',
+          nextValue: buildInternalTree(beforeData[key], afterData[key]),
         };
       }
       if (beforeData[key] === afterData[key]) {
         return {
           name,
           type: 'unchanged',
-          value: beforeData[key],
+          nextValue: beforeData[key],
         };
       }
       if (!_.has(afterData, name) && _.has(beforeData, name)) {
         return {
           name,
           type: 'deleted',
-          value: beforeData[key],
+          nextValue: beforeData[key],
         };
       }
       if (!_.has(beforeData, name) && _.has(afterData, name)) {
         return {
           name,
           type: 'added',
-          value: afterData[key],
+          nextValue: afterData[key],
         };
       }
       return {
         name,
         type: 'changed',
-        value: afterData[key],
+        nextValue: afterData[key],
         prevValue: beforeData[key],
       };
     });
