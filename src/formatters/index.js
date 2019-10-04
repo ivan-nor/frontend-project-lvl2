@@ -1,5 +1,5 @@
-import astToRecursive from './recursive2';
-import astToPlain from './plain2';
+import astToRecursive from './recursive';
+import astToPlain from './plain';
 import astToJson from './json';
 
 export default (format) => {
