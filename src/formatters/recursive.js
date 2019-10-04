@@ -2,14 +2,14 @@ import _ from 'lodash';
 
 const tab = '  ';
 
-const stringify = (obj, depthOfTabs) => {
-  if (_.isObject(obj)) {
-    const list = _.keys(obj);
+const stringify = (item, depthOfTabs) => {
+  if (_.isObject(item)) {
+    const list = _.keys(item);
     const result = list
-      .map(key => `${tab.repeat(depthOfTabs + 2)}${key}: ${obj[key]}`);
+      .map(key => `${tab.repeat(depthOfTabs + 2)}${key}: ${item[key]}`);
     return `{\n${result.join('\n')}\n${tab.repeat(depthOfTabs)}}`;
   }
-  return `${obj}`;
+  return `${item}`;
 };
 
 const astToRecursive = (ast) => {
@@ -34,11 +34,10 @@ const astToRecursive = (ast) => {
         case 'unchanged': {
           return `${indent}  ${name}: ${stringify(nextValue, depthIndent + 2)}`;
         }
-        default:
-          throw new Error('unexpected type of node');
+        default: throw new Error('unexpected type of node');
       }
     });
-    return `${nodes.join('\n')}`;
+    return nodes.join('\n');
   };
   return `{\n${iter(ast, 1)}\n}`;
 };
