@@ -35,7 +35,7 @@ const astToRecursive = (ast) => {
           return `${indent}  ${name}: ${stringify(nextValue, depthIndent + 2)}\n`;
         }
         default:
-          return '';
+          throw new Error('unexpected type of node');
       }
     });
     return `{\n${nodes.join('')}`;

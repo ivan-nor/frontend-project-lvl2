@@ -2,36 +2,38 @@ import _ from 'lodash';
 
 const astToPlain = (ast) => {
   const iter = (tree, accName = '') => {
-    const nodes = tree.map(({
-      name, type, nextValue, prevValue,
-    }) => {
-      const newAccName = !accName ? `${name}` : `${accName}.${name}`;
-      switch (type) {
-        case 'nested': {
-          return iter(nextValue, newAccName);
+    const nodes = tree
+      .filter(({ type }) => type !== 'unchanged')
+      .map(({
+        name, type, nextValue, prevValue,
+      }) => {
+        const newAccName = !accName ? `${name}` : `${accName}.${name}`;
+        switch (type) {
+          case 'nested': {
+            return iter(nextValue, newAccName);
+          }
+          case 'added': {
+            const newValue = _.isObject(nextValue) ? '[complex value]' : nextValue;
+            return `Property '${newAccName}' was added with value: ${newValue}`;
+          }
+          case 'deleted': {
+            return `Property '${newAccName}' was removed`;
+          }
+          case 'changed': {
+            const newPrevValue = _.isObject(prevValue) ? '[complex value]' : prevValue;
+            const newNextValue = _.isObject(nextValue) ? '[complex value]' : nextValue;
+            return `Property '${newAccName}' was updated. From ${newPrevValue} to ${newNextValue}`;
+          }
+          default:
+            throw new Error('unexpected type of node');
         }
-        case 'unchanged': {
-          return '';
-        }
-        case 'added': {
-          const newValue = _.isObject(nextValue) ? '[complex value]' : nextValue;
-          return `\nProperty '${newAccName}' was added with value: ${newValue}`;
-        }
-        case 'deleted': {
-          return `\nProperty '${newAccName}' was removed`;
-        }
-        case 'changed': {
-          const newPrevValue = _.isObject(prevValue) ? '[complex value]' : prevValue;
-          const newNextValue = _.isObject(nextValue) ? '[complex value]' : nextValue;
-          return `\nProperty '${newAccName}' was updated. From ${newPrevValue} to ${newNextValue}`;
-        }
-        default:
-          return '';
-      }
-    });
-    return nodes.join('');
+      });
+    // console.log(nodes);
+    return nodes.join('\n');
   };
-  return iter(ast, '');
+  const resultArr = iter(ast);
+  // console.log(resultArr);
+  return resultArr;
 };
 
 export default astToPlain;
