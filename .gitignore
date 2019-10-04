@@ -1,5 +1,3 @@
 node_modules
 dist
 coverage
-src/formatters/plain.js
-src/formatters/recursive.js
