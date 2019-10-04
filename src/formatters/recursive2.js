@@ -6,8 +6,8 @@ const stringify = (obj, depthOfTabs) => {
   if (_.isObject(obj)) {
     const list = _.keys(obj);
     const result = list
-      .map(key => `\n${tab.repeat(depthOfTabs + 2)}${key}: ${obj[key]}`);
-    return `{${result.join('')}\n${tab.repeat(depthOfTabs)}}`;
+      .map(key => `${tab.repeat(depthOfTabs + 2)}${key}: ${obj[key]}`);
+    return `{\n${result.join('\n')}\n${tab.repeat(depthOfTabs)}}`;
   }
   return `${obj}`;
 };
@@ -20,28 +20,27 @@ const astToRecursive = (ast) => {
       const indent = tab.repeat(depthIndent);
       switch (type) {
         case 'nested': {
-          return `${indent}  ${name}: ${iter(nextValue, depthIndent + 2)}${'  '.repeat(depthIndent + 1)}}\n`;
+          return `${indent}  ${name}: {\n${iter(nextValue, depthIndent + 2)}\n${'  '.repeat(depthIndent + 1)}}`;
         }
         case 'added': {
-          return `${indent}+ ${name}: ${stringify(nextValue, depthIndent + 1)}\n`;
+          return `${indent}+ ${name}: ${stringify(nextValue, depthIndent + 1)}`;
         }
         case 'deleted': {
-          return `${indent}- ${name}: ${stringify(nextValue, depthIndent + 1)}\n`;
+          return `${indent}- ${name}: ${stringify(nextValue, depthIndent + 1)}`;
         }
         case 'changed': {
-          return `${indent}+ ${name}: ${stringify(nextValue, depthIndent + 1)}\n${indent}- ${name}: ${stringify(prevValue, depthIndent + 1)}\n`;
+          return `${indent}+ ${name}: ${stringify(nextValue, depthIndent + 1)}\n${indent}- ${name}: ${stringify(prevValue, depthIndent + 1)}`;
         }
         case 'unchanged': {
-          return `${indent}  ${name}: ${stringify(nextValue, depthIndent + 2)}\n`;
+          return `${indent}  ${name}: ${stringify(nextValue, depthIndent + 2)}`;
         }
         default:
           throw new Error('unexpected type of node');
       }
     });
-    return `{\n${nodes.join('')}`;
+    return `${nodes.join('\n')}`;
   };
-  const resultStr = iter(ast, 1);
-  return `\n${resultStr}}`;
+  return `{\n${iter(ast, 1)}\n}`;
 };
 
 export default astToRecursive;
