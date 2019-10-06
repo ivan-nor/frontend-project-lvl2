@@ -2,7 +2,7 @@
   {
     "name": "common",
     "type": "nested",
-    "nextValue": [
+    "children": [
       {
         "name": "setting1",
         "type": "unchanged",
@@ -24,7 +24,7 @@
       {
         "name": "setting6",
         "type": "nested",
-        "nextValue": [
+        "children": [
           {
             "name": "key",
             "type": "unchanged",
@@ -59,7 +59,7 @@
   {
     "name": "group1",
     "type": "nested",
-    "nextValue": [
+    "children": [
       {
         "name": "baz",
         "type": "changed",
