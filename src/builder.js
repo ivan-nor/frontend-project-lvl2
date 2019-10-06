@@ -9,7 +9,7 @@ const buildInternalTree = (beforeData, afterData) => {
         return {
           name,
           type: 'nested',
-          nextValue: buildInternalTree(beforeData[key], afterData[key]),
+          children: buildInternalTree(beforeData[key], afterData[key]),
         };
       }
       if (beforeData[key] === afterData[key]) {
